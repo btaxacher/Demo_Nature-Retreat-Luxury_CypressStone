@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>The Stay | Cypress &amp; Stone</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Manrope:wght@300;400;500;600&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-on-surface": "#f3f0eb",
+                        "on-primary-container": "#97b39f",
+                        "secondary-fixed-dim": "#d9c2b2",
+                        "surface-variant": "#e5e2dd",
+                        "surface-tint": "#4a6453",
+                        "background": "#fcf9f4",
+                        "outline": "#737973",
+                        "on-secondary-container": "#726153",
+                        "tertiary": "#1d2d33",
+                        "surface-container-high": "#ebe8e3",
+                        "surface-dim": "#dcdad5",
+                        "on-background": "#1c1c19",
+                        "on-tertiary-fixed": "#0e1e23",
+                        "surface-container-low": "#f6f3ee",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#f6decd",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#d4e5ed",
+                        "surface-container-highest": "#e5e2dd",
+                        "inverse-surface": "#31302d",
+                        "on-secondary-fixed": "#25190f",
+                        "secondary": "#6c5b4e",
+                        "primary-container": "#2d4636",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#b1cdb8",
+                        "surface-container": "#f0ede8",
+                        "on-surface": "#1c1c19",
+                        "primary-fixed-dim": "#b1cdb8",
+                        "tertiary-container": "#334349",
+                        "secondary-container": "#f6decd",
+                        "primary": "#173021",
+                        "on-primary-fixed-variant": "#334c3c",
+                        "on-secondary-fixed-variant": "#534437",
+                        "outline-variant": "#c2c8c1",
+                        "on-surface-variant": "#424843",
+                        "on-tertiary-container": "#9fafb7",
+                        "on-primary-fixed": "#072013",
+                        "on-tertiary-fixed-variant": "#3a4950",
+                        "surface-bright": "#fcf9f4",
+                        "tertiary-fixed-dim": "#b8c9d1",
+                        "surface": "#fcf9f4",
+                        "primary-fixed": "#ccead3"
+                    },
+                    fontFamily: {
+                        "headline": ["Noto Serif"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .no-line-rule {
+            border: none !important;
+        }
+
+        .tonal-shift {
+            transition: background-color 0.3s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { opacity: 1; transform: none; transition: none; }
+            body { animation: none; }
+            html { scroll-behavior: auto; }
+        }
+    </style>
+</head>
+
+<body class="bg-surface font-body text-on-surface antialiased">
+    <!-- Top Navigation Bar -->
+    <nav
+        class="fixed top-0 w-full z-50 bg-[#fcf9f4]/70 dark:bg-[#1c1c19]/70 backdrop-blur-xl backdrop-saturate-150 shadow-[0_20px_40px_rgba(28,28,25,0.05)] no-line-rule tonal-shift flex justify-between items-center px-6 py-4 md:px-12 md:py-6 w-full max-w-none">
+        <a href="/" class="font-['Noto_Serif'] text-2xl font-bold tracking-tighter text-[#173021] dark:text-[#fcf9f4]">
+            Cypress &amp; Stone
+        </a>
+        <div class="hidden md:flex items-center space-x-10 font-['Noto_Serif'] text-lg tracking-tight">
+            <a class="text-[#173021] dark:text-[#ffffff] border-b-2 border-[#173021] dark:border-[#fcf9f4] pb-1 hover:text-[#173021] dark:hover:text-[#ffffff] transition-colors duration-300"
+                href="/the-stay.html">The Stay</a>
+            <a class="text-[#737973] dark:text-[#c2c8c1] hover:text-[#173021] dark:hover:text-[#ffffff] transition-colors duration-300"
+                href="/dining.html">Dining</a>
+            <a class="text-[#737973] dark:text-[#c2c8c1] hover:text-[#173021] dark:hover:text-[#ffffff] transition-colors duration-300"
+                href="/wellness.html">Wellness</a>
+            <a class="text-[#737973] dark:text-[#c2c8c1] hover:text-[#173021] dark:hover:text-[#ffffff] transition-colors duration-300"
+                href="/experiences.html">Experiences</a>
+        </div>
+        <button id="mobile-menu-btn" class="md:hidden" aria-label="Open menu">
+            <span class="material-symbols-outlined text-primary text-2xl">menu</span>
+        </button>
+        <a href="/book-now.html"
+            class="hidden md:inline-block bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container">
+            Book Now
+        </a>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 bg-[#fcf9f4]/95 backdrop-blur-xl shadow-lg z-40 px-6 py-8 space-y-6 font-['Noto_Serif'] text-lg">
+        <a href="/the-stay.html" class="block text-primary font-bold border-b-2 border-primary pb-1">The Stay</a>
+        <a href="/dining.html" class="block text-primary hover:text-primary-container transition-colors">Dining</a>
+        <a href="/wellness.html" class="block text-primary hover:text-primary-container transition-colors">Wellness</a>
+        <a href="/experiences.html" class="block text-primary hover:text-primary-container transition-colors">Experiences</a>
+        <a href="/book-now.html" class="block bg-primary text-on-primary px-6 py-3 rounded-md text-center font-label text-sm tracking-widest uppercase">Book Now</a>
+    </div>
+
+    <main>
+    <!-- Hero Section -->
+    <header class="relative h-[70vh] flex items-center justify-center overflow-hidden">
+        <img class="absolute inset-0 w-full h-full object-cover" alt="Cozy suite interior"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwT1Yngn_XDiVR0hYfOLTSf0ZI4YjRGvRJ-NvNz0ETK8owfVLJ_U4B4gHkMXycLK6TfgepGInfMDekENZuVjnwZQhcPowZfW4AO8X0_NGn1zBmL-yWRsLKAv7NMglGIgHLgS5hVg3zCKLYs6hZ7v-lNrXNe6yzj4zOA88TimyTxmWhpjM1tdXuHX4olsgrQGQA8030YHCWwtMNljzyJzca8fv6s12Y9yLvaqmM4pn7CzBHO8Qzli95_J-hgTkXW1u0byt70qFv3RU" />
+        <div class="absolute inset-0 bg-primary/30 backdrop-brightness-75"></div>
+        <div class="relative z-10 text-center max-w-5xl px-6 mt-16">
+            <span class="font-label text-on-primary text-xs tracking-[0.3em] uppercase mb-4 block">Accommodation</span>
+            <h1 class="font-headline text-5xl md:text-7xl text-on-primary tracking-tighter leading-tight mb-6">
+                Suites Among the Trees
+            </h1>
+            <div class="h-px w-24 bg-on-primary/30 mx-auto mb-6"></div>
+            <p class="text-on-primary text-lg font-light max-w-2xl mx-auto leading-relaxed opacity-90">
+                Immerse yourself in forest tranquility. Each suite is designed to bring the outside in with natural
+                materials and expansive windows.
+            </p>
+        </div>
+    </header>
+
+    <!-- Rooms List Section -->
+    <section class="py-24 px-6 md:px-12 lg:px-24 bg-surface max-w-7xl mx-auto reveal">
+        <!-- Room 1 -->
+        <div class="flex flex-col lg:flex-row gap-16 items-center mb-32">
+            <div class="lg:w-1/2">
+                <div class="overflow-hidden rounded-xl shadow-lg group">
+                    <img class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
+                        alt="Cozy modern rustic hotel suite"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwT1Yngn_XDiVR0hYfOLTSf0ZI4YjRGvRJ-NvNz0ETK8owfVLJ_U4B4gHkMXycLK6TfgepGInfMDekENZuVjnwZQhcPowZfW4AO8X0_NGn1zBmL-yWRsLKAv7NMglGIgHLgS5hVg3zCKLYs6hZ7v-lNrXNe6yzj4zOA88TimyTxmWhpjM1tdXuHX4olsgrQGQA8030YHCWwtMNljzyJzca8fv6s12Y9yLvaqmM4pn7CzBHO8Qzli95_J-hgTkXW1u0byt70qFv3RU" />
+                </div>
+            </div>
+            <div class="lg:w-1/2">
+                <span class="font-label text-primary/60 text-xs tracking-[0.2em] uppercase mb-2 block">The Canyon
+                    Loft</span>
+                <h2 class="font-headline text-4xl text-primary mb-4">Intimate Nature Retreat</h2>
+                <div class="flex gap-4 mb-6">
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">450
+                        SQ FT</span>
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">Forest
+                        View</span>
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">From
+                        $650</span>
+                </div>
+                <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+                    Vaulted cedar ceilings and a private balcony suspended over the creekbed. Wake up to the sound of
+                    flowing water and the sight of ancient redwoods right outside your window.
+                </p>
+                <a href="/book-now.html?room=canyon-loft"
+                    class="bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container inline-block">
+                    Book This Loft
+                </a>
+            </div>
+        </div>
+
+        <!-- Room 2 -->
+        <div class="flex flex-col lg:flex-row-reverse gap-16 items-center mb-32">
+            <div class="lg:w-1/2">
+                <div class="overflow-hidden rounded-xl shadow-lg group">
+                    <img class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
+                        alt="Spacious suite with floor-to-ceiling windows"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_S97ZucbDy2j2v-J97NfXeptpLkDxTBuKuEtYuuvww-qhfWwKFHbn-MGc-YVMJHu8f4QTAPXF_Jjttu5TquS86SclJWjQqgyiWwHd0V9HBOZQHTQbwWtOXi6c-IoDMQBvmagxYQfc6-Zjd8-1rDYkQLG48COc7UHQ7Ll7tR3xjg-i5olchoAbgamrDCXDa8TE00HkLkVc_rjXde60qUgG5tKyTqqHZZoxSIxwI7jB642_kPdUeYrDYTnvgQN3vzNnCE_7jH_FyCs" />
+                </div>
+            </div>
+            <div class="lg:w-1/2">
+                <span class="font-label text-primary/60 text-xs tracking-[0.2em] uppercase mb-2 block">Ocean Watch
+                    Suite</span>
+                <h2 class="font-headline text-4xl text-primary mb-4">Elevated Elegance</h2>
+                <div class="flex gap-4 mb-6">
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">600
+                        SQ FT</span>
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">Partial
+                        Ocean View</span>
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">From
+                        $820</span>
+                </div>
+                <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+                    Elevated position on the ridge providing glimpses of the Pacific through the trees. Features an
+                    en-suite stone soaking tub and a cozy reading nook perfect for misty mornings.
+                </p>
+                <a href="/book-now.html?room=ocean-watch"
+                    class="bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container inline-block">
+                    Book This Suite
+                </a>
+            </div>
+        </div>
+
+        <!-- Room 3 -->
+        <div class="flex flex-col lg:flex-row gap-16 items-center">
+            <div class="lg:w-1/2">
+                <div class="overflow-hidden rounded-xl shadow-lg group">
+                    <img class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
+                        alt="Detail of a wood-burning fireplace"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCw2xI73rxecPl0EMJqcU2U8tilx9ypE9Z5FWw5RMX_qh6NmrvlLbBTpAEEv06wTrrlZZadSWAd-TCgJ2VlMsORg_y653wZFmnpx4wwsAHUUVt9O7HJR6iG3QZ8KlwiakWg7NDaHX-U9C_eDcXSle2il8-ZLg4-qmdQBdvyTmpuuanu72vJpSMBBbXAVZOy5x25uKpBCahNLdiuYN9DLZk3Nteg4Ce1zYCRXAKYZUNK00EB6zAMPa_Vv5CBsXCuqAhFbGUg5jPAmSo" />
+                </div>
+            </div>
+            <div class="lg:w-1/2">
+                <span class="font-label text-primary/60 text-xs tracking-[0.2em] uppercase mb-2 block">The Elderwood
+                    Villa</span>
+                <h2 class="font-headline text-4xl text-primary mb-4">Ultimate Luxury</h2>
+                <div class="flex gap-4 mb-6">
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">1200
+                        SQ FT</span>
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">Panoramic
+                        View</span>
+                    <span
+                        class="bg-surface-variant px-3 py-1 rounded-md text-xs tracking-widest uppercase font-semibold text-primary">From
+                        $1,100</span>
+                </div>
+                <p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+                    A detached residence with absolute privacy. Complete with your own private thermal pool, an outdoor
+                    fireplace, and a spacious living area designed for gathering.
+                </p>
+                <a href="/book-now.html?room=elderwood-villa"
+                    class="bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container inline-block">
+                    Book The Villa
+                </a>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#1d2d33] dark:bg-[#121c20] text-[#fcf9f4]">
+        <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-12 px-16 py-20 w-full font-['Manrope'] text-sm tracking-wide uppercase">
+            <!-- Brand Column -->
+            <div class="space-y-6">
+                <a href="/" class="font-['Noto_Serif'] text-xl text-[#fcf9f4]">Cypress &amp; Stone</a>
+                <p class="font-light tracking-normal opacity-70 normal-case max-w-xs leading-relaxed">
+                    A boutique sanctuary designed for deep rest and reconnection with the wild landscapes of Northern
+                    California.
+                </p>
+                <div class="flex gap-4">
+                    <a href="#" aria-label="Website"
+                        class="material-symbols-outlined opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                        data-icon="public">public</a>
+                    <a href="#" aria-label="Instagram"
+                        class="material-symbols-outlined opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                        data-icon="camera">camera</a>
+                    <a href="#" aria-label="Email"
+                        class="material-symbols-outlined opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                        data-icon="mail">mail</a>
+                </div>
+            </div>
+            <!-- Links Column -->
+            <div class="flex flex-col gap-4">
+                <span class="font-bold mb-2 opacity-50">Discovery</span>
+                <a class="text-[#c2c8c1] hover:text-[#ffffff] transition-opacity duration-300 opacity-80 hover:opacity-100"
+                    href="#">Contact</a>
+                <a class="text-[#c2c8c1] hover:text-[#ffffff] transition-opacity duration-300 opacity-80 hover:opacity-100"
+                    href="#">Privacy Policy</a>
+                <a class="text-[#c2c8c1] hover:text-[#ffffff] transition-opacity duration-300 opacity-80 hover:opacity-100"
+                    href="#">Sustainability</a>
+                <a class="text-[#c2c8c1] hover:text-[#ffffff] transition-opacity duration-300 opacity-80 hover:opacity-100"
+                    href="#">Careers</a>
+            </div>
+            <!-- Contact/Location Column -->
+            <div class="space-y-6">
+                <span class="font-bold mb-2 opacity-50 block">Sanctuary Address</span>
+                <p class="text-[#c2c8c1] normal-case tracking-normal opacity-80">
+                    1200 Shoreline Highway<br />
+                    Muir Beach, CA 94965<br />
+                    United States
+                </p>
+                <p class="text-[#c2c8c1] normal-case tracking-normal opacity-80">
+                    hello@cypressandstone.com<br />
+                    +1 415 555 0192
+                </p>
+            </div>
+        </div>
+        <div
+            class="px-16 py-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[10px] opacity-40">
+            <div>© 2026 Cypress &amp; Stone. Near Muir Woods, California.</div>
+            <div class="flex gap-8 mt-4 md:mt-0">
+                <span>All Rights Reserved</span>
+                <span>Designed by Nature</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+    });
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
+        const menu = document.getElementById('mobile-menu');
+        const icon = this.querySelector('.material-symbols-outlined');
+        menu.classList.toggle('hidden');
+        icon.textContent = menu.classList.contains('hidden') ? 'menu' : 'close';
+    });
+    </script>
+</body>
+
+</html>
