@@ -86,45 +86,183 @@
         }
 
         .tonal-shift {
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* Smooth scrolling */
         html {
             scroll-behavior: smooth;
         }
 
-        /* Page transition styles */
         body {
             animation: fadeIn 0.5s ease-in-out;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Scroll reveal animations */
+        /* Scroll reveal animations — base + directional variants */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
-        .reveal.active {
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
+            opacity: 1;
+            transform: translateY(0) translateX(0) scale(1);
+        }
+
+        /* Staggered delays */
+        [data-delay="1"] { transition-delay: 0.1s; }
+        [data-delay="2"] { transition-delay: 0.2s; }
+        [data-delay="3"] { transition-delay: 0.3s; }
+        [data-delay="4"] { transition-delay: 0.4s; }
+        [data-delay="5"] { transition-delay: 0.5s; }
+
+        /* Grain overlay for luxury texture */
+        .grain-overlay {
+            position: relative;
+        }
+        .grain-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            z-index: 1;
+        }
+
+        /* Animated link underlines */
+        .link-underline {
+            position: relative;
+            text-decoration: none;
+        }
+        .link-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: currentColor;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .link-underline:hover::after {
+            width: 100%;
+        }
+
+        /* Navbar scroll shrink */
+        .nav-scrolled {
+            padding-top: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+            box-shadow: 0 8px 30px rgba(28,28,25,0.12) !important;
+        }
+
+        /* Interactive Selector */
+        .selector-option {
+            position: relative;
+            flex: 1;
+            min-width: 60px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            cursor: pointer;
+            transition: flex 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .selector-option.active {
+            flex: 5;
+        }
+        .selector-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .selector-option.active .selector-bg {
+            transform: scale(1.05);
+        }
+        .selector-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(23,48,33,0.85) 0%, rgba(23,48,33,0.2) 40%, transparent 70%);
+            transition: opacity 0.5s ease;
+        }
+        .selector-icon-wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(23,48,33,0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.15);
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+        .selector-option.active .selector-icon-wrap {
+            opacity: 0;
+        }
+        .selector-label {
+            position: absolute;
+            bottom: 2rem;
+            left: 1.5rem;
+            right: 1.5rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease 0.15s, transform 0.5s ease 0.15s;
+        }
+        .selector-option.active .selector-label {
             opacity: 1;
             transform: translateY(0);
         }
+
+        /* Mobile selector: vertical */
+        @media (max-width: 768px) {
+            .selector-container {
+                flex-direction: column;
+                height: auto !important;
+            }
+            .selector-option {
+                min-height: 70px;
+                flex: none;
+                height: 70px;
+                transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .selector-option.active {
+                height: 280px;
+                flex: none;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
+            .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; transition: none; }
             body { animation: none; }
             html { scroll-behavior: auto; }
+            .selector-option, .selector-bg, .selector-label, .selector-icon-wrap { transition: none; }
         }
     </style>
 </head>
@@ -151,7 +289,7 @@
                 <span class="material-symbols-outlined text-2xl" id="menu-icon">menu</span>
             </button>
             <a href="/book-now.html"
-                class="hidden md:inline-block bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container">
+                class="hidden md:inline-block bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase transition-all duration-300 ease-in-out hover:bg-primary-container hover:scale-[1.02] hover:shadow-lg">
                 Book Now
             </a>
         </div>
@@ -174,9 +312,9 @@
 
     <main>
     <!-- Hero Section -->
-    <header class="relative h-screen flex items-center justify-center overflow-hidden bg-[#173021]">
-        <img class="absolute inset-0 w-full h-full object-cover" alt="Sunlight streaming through ancient redwood canopy in Muir Woods"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGc_NnPnjbeN9eA1TGBjr9N9e87gEkOhSSZSJEKiGJ93o35lyA8DosYOm1NMAjs-9fRz2ZhTR3IJhZsz-Scq2jYDG3tGuzEYgvoVOMCqm4AarFVqrecs-CyI1HHwVHkRVPAvT_2vrUNrQtbsbFX34dQt5vGptVCgwYENH5lGlIhBECIKf_H6-goRnNo6k7JVaCXDUmcYd-f3C98yQk0op5bvtC3f_PrKkzhC63yct9pOCYfYUB0DlE9ANA8Zl2Q6zCDHleMycd-Dc" />
+    <header class="relative h-screen flex items-center justify-center overflow-hidden bg-[#173021] grain-overlay">
+        <img class="absolute inset-0 w-full h-full object-cover hero-parallax" loading="eager" alt="Sunlight streaming through ancient redwood canopy in Muir Woods"
+            src="/images/hero-redwoods.png" />
         <div class="absolute inset-0 bg-primary/20 backdrop-brightness-75 pointer-events-none"></div>
         <div class="relative z-10 text-center max-w-5xl px-6 mt-16">
             <span class="font-label text-on-primary text-xs tracking-[0.3em] uppercase mb-8 block">Marin County,
@@ -241,10 +379,10 @@
             <div class="grid grid-cols-2 gap-4">
                 <img class="w-full aspect-[4/5] object-cover rounded-xl shadow-lg mt-12"
                     alt="Close-up of vibrant organic vegetables on a rustic wooden table with soft side lighting and earthy tones"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVLq6FSvD3DvHJM0rAB8FGd34SoPqSgwTcsZlsZccNF4zQKJ3oRQIosZcFQjhJzTBCUPHgZKfZBjVE5pnQ87JOXvFuqwm60a8lqfBbDAc7qj2QMnYWxAqTIBU2TtYEJwn1Ylr7E8Oxuioveg_CeCKaWho0LNYzyCywxz8oOxW2LgwUaaD0gUwpbxV3oTUhL475CE0n61PfSW1x61lrmFcaY83ZkpRPfRDzA5lSy-7WviRC_lbasAnJzcsHFofZ-4yAu7HXmti9-kk" />
+                    src="/images/vegetables.png" loading="lazy" decoding="async" />
                 <img class="w-full aspect-[4/5] object-cover rounded-xl shadow-lg"
                     alt="Artisanal plate of food featuring roasted vegetables and microgreens on a matte ceramic plate with professional plating"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLhUJl_LQukAqZknp3yYT6q9Et9yX1XOapwJ_bAqMInmmKPan9zLYtTd_Q_D3cn8y4JNtOY-qEDqnQc21KvW_0H2QA2zJBc9_Pt_Eu0TRBzYvBRKfxNZGz0TcikKBWDIT70a4Reg0BjOKe9mf3T_tyed4xpjg--Yu_jab5O2vTbtu2Xp2Y_JnSrrLmJc6PSMelXmADHYcuJ6xXbg1rkRshdenLDqTM4ghcd3IZCIuBQov8L2Fipfaqvjn_432JVFg9lH1r663VIH4" />
+                    src="/images/plated-dish.png" loading="lazy" decoding="async" />
             </div>
             <div
                 class="absolute -bottom-8 -left-8 bg-primary p-12 text-on-primary rounded-xl hidden md:block max-w-xs shadow-2xl">
@@ -266,8 +404,8 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Treatment 1 -->
-                <div
-                    class="bg-surface p-10 rounded-xl shadow-[0_10px_30px_rgba(28,28,25,0.03)] hover:-translate-y-2 transition-transform duration-500">
+                <div data-delay="1"
+                    class="reveal bg-surface p-10 rounded-xl shadow-[0_10px_30px_rgba(28,28,25,0.03)] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(28,28,25,0.08)] transition-all duration-500">
                     <span class="material-symbols-outlined text-4xl text-primary-container mb-8 block"
                         data-icon="water_drop">water_drop</span>
                     <h3 class="font-headline text-2xl text-primary mb-4">Thermal Pools</h3>
@@ -275,8 +413,8 @@
                         temperature, overlooking the fern canyon.</p>
                 </div>
                 <!-- Treatment 2 -->
-                <div
-                    class="bg-surface p-10 rounded-xl shadow-[0_10px_30px_rgba(28,28,25,0.03)] hover:-translate-y-2 transition-transform duration-500">
+                <div data-delay="2"
+                    class="reveal bg-surface p-10 rounded-xl shadow-[0_10px_30px_rgba(28,28,25,0.03)] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(28,28,25,0.08)] transition-all duration-500">
                     <span class="material-symbols-outlined text-4xl text-primary-container mb-8 block"
                         data-icon="spa">spa</span>
                     <h3 class="font-headline text-2xl text-primary mb-4">Redwood Sap Massage</h3>
@@ -284,8 +422,8 @@
                         distilled redwood and cypress essential oils.</p>
                 </div>
                 <!-- Treatment 3 -->
-                <div
-                    class="bg-surface p-10 rounded-xl shadow-[0_10px_30px_rgba(28,28,25,0.03)] hover:-translate-y-2 transition-transform duration-500">
+                <div data-delay="3"
+                    class="reveal bg-surface p-10 rounded-xl shadow-[0_10px_30px_rgba(28,28,25,0.03)] hover:-translate-y-2 hover:shadow-[0_20px_50px_rgba(28,28,25,0.08)] transition-all duration-500">
                     <span class="material-symbols-outlined text-4xl text-primary-container mb-8 block"
                         data-icon="nature_people">nature_people</span>
                     <h3 class="font-headline text-2xl text-primary mb-4">Shinrin-Yoku</h3>
@@ -297,7 +435,7 @@
             <div class="mt-20 relative h-[500px] rounded-xl overflow-hidden shadow-2xl">
                 <img class="w-full h-full object-cover"
                     alt="Luxury outdoor spa setting with a steaming stone bath surrounded by lush green ferns and misty forest"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJHXiRohMu9GrqXyp3rGgcdaspYvhxMQ4XR-FLbct2xFlx1QnY-gdLHJdJCXZFTzLogfArNOFs_V-ggmlhD7giJj7X8GNkHCZmKIPJUCgwd53M16H8b-LmzRGDWji3cEWgTevjUuYGVA7muMNgjxNWLWVRy0BYC4GVeg6aOMMsfbWP99DciDYF0W2PtBv3NaJ197GWX4AsLKtgoXvUfSllhNywgDvmks6rsxoO7GBcylpmVCkn5AUSczHJus4TrUKdpDgPapoHJVM" />
+                    src="/images/hero-spa.png" loading="lazy" decoding="async" />
                 <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent"></div>
                 <div
                     class="absolute bottom-12 left-12 right-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -314,6 +452,79 @@
         </div>
     </section>
 
+    <!-- Interactive Selector — Explore Your Retreat -->
+    <section class="py-32 px-6 bg-primary overflow-hidden grain-overlay">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal">
+                <span class="font-label text-on-primary/50 text-xs tracking-[0.2em] uppercase mb-4 block">Explore</span>
+                <h2 class="font-headline text-4xl md:text-6xl text-on-primary mb-6">Your Retreat Awaits</h2>
+                <div class="h-px w-20 bg-on-primary/20 mx-auto"></div>
+            </div>
+            <div class="flex gap-3 h-[500px] selector-container" id="selector-container">
+                <!-- Option 1: Canyon Loft -->
+                <div class="selector-option active" data-index="0" tabindex="0" role="button" aria-label="Canyon Loft">
+                    <img src="/images/canyon-loft.png" alt="Canyon Loft suite" class="selector-bg" loading="lazy" decoding="async" />
+                    <div class="selector-overlay"></div>
+                    <div class="selector-icon-wrap">
+                        <span class="material-symbols-outlined text-2xl text-on-primary">cottage</span>
+                    </div>
+                    <div class="selector-label">
+                        <h3 class="font-headline text-2xl text-on-primary">Canyon Loft</h3>
+                        <p class="text-on-primary/70 text-sm mt-2">Vaulted cedar ceilings over the creekbed</p>
+                    </div>
+                </div>
+                <!-- Option 2: Farm-to-Table -->
+                <div class="selector-option" data-index="1" tabindex="0" role="button" aria-label="Farm-to-Table Dining">
+                    <img src="/images/plated-dish.png" alt="Farm-to-table dining" class="selector-bg" loading="lazy" decoding="async" />
+                    <div class="selector-overlay"></div>
+                    <div class="selector-icon-wrap">
+                        <span class="material-symbols-outlined text-2xl text-on-primary">restaurant</span>
+                    </div>
+                    <div class="selector-label">
+                        <h3 class="font-headline text-2xl text-on-primary">Farm-to-Table</h3>
+                        <p class="text-on-primary/70 text-sm mt-2">The forest and coast on your plate</p>
+                    </div>
+                </div>
+                <!-- Option 3: Coastal Wellness -->
+                <div class="selector-option" data-index="2" tabindex="0" role="button" aria-label="Coastal Wellness">
+                    <img src="/images/hero-spa.png" alt="Coastal wellness thermal pools" class="selector-bg" loading="lazy" decoding="async" />
+                    <div class="selector-overlay"></div>
+                    <div class="selector-icon-wrap">
+                        <span class="material-symbols-outlined text-2xl text-on-primary">spa</span>
+                    </div>
+                    <div class="selector-label">
+                        <h3 class="font-headline text-2xl text-on-primary">Coastal Wellness</h3>
+                        <p class="text-on-primary/70 text-sm mt-2">Return to stillness at the thermal pools</p>
+                    </div>
+                </div>
+                <!-- Option 4: Thermal Sanctuary -->
+                <div class="selector-option" data-index="3" tabindex="0" role="button" aria-label="Thermal Sanctuary">
+                    <img src="/images/forest-bathing.png" alt="Thermal sanctuary forest bathing" class="selector-bg" loading="lazy" decoding="async" />
+                    <div class="selector-overlay"></div>
+                    <div class="selector-icon-wrap">
+                        <span class="material-symbols-outlined text-2xl text-on-primary">water_drop</span>
+                    </div>
+                    <div class="selector-label">
+                        <h3 class="font-headline text-2xl text-on-primary">Thermal Sanctuary</h3>
+                        <p class="text-on-primary/70 text-sm mt-2">Ancient bathing rituals, reimagined</p>
+                    </div>
+                </div>
+                <!-- Option 5: Forest Expeditions -->
+                <div class="selector-option" data-index="4" tabindex="0" role="button" aria-label="Forest Expeditions">
+                    <img src="/images/hiking-trail.png" alt="Forest expeditions hiking" class="selector-bg" loading="lazy" decoding="async" />
+                    <div class="selector-overlay"></div>
+                    <div class="selector-icon-wrap">
+                        <span class="material-symbols-outlined text-2xl text-on-primary">hiking</span>
+                    </div>
+                    <div class="selector-label">
+                        <h3 class="font-headline text-2xl text-on-primary">Forest Expeditions</h3>
+                        <p class="text-on-primary/70 text-sm mt-2">Guided walks through Muir Woods</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Exploration Section (Muir Woods Hikes) -->
     <section class="reveal py-32 overflow-hidden bg-surface">
         <div class="max-w-7xl mx-auto px-6">
@@ -322,7 +533,7 @@
                     <div class="aspect-[3/4] bg-surface-variant rounded-xl overflow-hidden">
                         <img class="w-full h-full object-cover grayscale-[20%] contrast-110"
                             alt="Sunlight streaming through redwood canopy in Muir Woods with a hiking path disappearing into the mist"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGc_NnPnjbeN9eA1TGBjr9N9e87gEkOhSSZSJEKiGJ93o35lyA8DosYOm1NMAjs-9fRz2ZhTR3IJhZsz-Scq2jYDG3tGuzEYgvoVOMCqm4AarFVqrecs-CyI1HHwVHkRVPAvT_2vrUNrQtbsbFX34dQt5vGptVCgwYENH5lGlIhBECIKf_H6-goRnNo6k7JVaCXDUmcYd-f3C98yQk0op5bvtC3f_PrKkzhC63yct9pOCYfYUB0DlE9ANA8Zl2Q6zCDHleMycd-Dc" />
+                            src="/images/hero-redwoods.png" loading="lazy" decoding="async" />
                     </div>
                     <!-- Nature Overlay Typography Block -->
                     <div
@@ -398,7 +609,7 @@
                     <div class="overflow-hidden rounded-xl mb-6 relative">
                         <img class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
                             alt="Cozy modern rustic hotel suite with wood-cladded walls, large window showing forest, and plush white bedding"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwT1Yngn_XDiVR0hYfOLTSf0ZI4YjRGvRJ-NvNz0ETK8owfVLJ_U4B4gHkMXycLK6TfgepGInfMDekENZuVjnwZQhcPowZfW4AO8X0_NGn1zBmL-yWRsLKAv7NMglGIgHLgS5hVg3zCKLYs6hZ7v-lNrXNe6yzj4zOA88TimyTxmWhpjM1tdXuHX4olsgrQGQA8030YHCWwtMNljzyJzca8fv6s12Y9yLvaqmM4pn7CzBHO8Qzli95_J-hgTkXW1u0byt70qFv3RU" />
+                            src="/images/canyon-loft.png" loading="lazy" decoding="async" />
                         <div
                             class="absolute top-4 left-4 bg-surface px-4 py-1 rounded-full font-label text-[10px] tracking-widest uppercase text-primary">
                             From $650</div>
@@ -414,7 +625,7 @@
                     <div class="overflow-hidden rounded-xl mb-6 relative">
                         <img class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
                             alt="Spacious suite with floor-to-ceiling windows, mid-century modern furniture, and an en-suite stone soaking tub"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_S97ZucbDy2j2v-J97NfXeptpLkDxTBuKuEtYuuvww-qhfWwKFHbn-MGc-YVMJHu8f4QTAPXF_Jjttu5TquS86SclJWjQqgyiWwHd0V9HBOZQHTQbwWtOXi6c-IoDMQBvmagxYQfc6-Zjd8-1rDYkQLG48COc7UHQ7Ll7tR3xjg-i5olchoAbgamrDCXDa8TE00HkLkVc_rjXde60qUgG5tKyTqqHZZoxSIxwI7jB642_kPdUeYrDYTnvgQN3vzNnCE_7jH_FyCs" />
+                            src="/images/ocean-suite.png" loading="lazy" decoding="async" />
                         <div
                             class="absolute top-4 left-4 bg-surface px-4 py-1 rounded-full font-label text-[10px] tracking-widest uppercase text-primary">
                             From $820</div>
@@ -430,7 +641,7 @@
                     <div class="overflow-hidden rounded-xl mb-6 relative">
                         <img class="w-full aspect-[4/3] object-cover group-hover:scale-105 transition-transform duration-700"
                             alt="Detail of a wood-burning fireplace in a rustic suite with comfortable armchairs and warm ambient lighting"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCw2xI73rxecPl0EMJqcU2U8tilx9ypE9Z5FWw5RMX_qh6NmrvlLbBTpAEEv06wTrrlZZadSWAd-TCgJ2VlMsORg_y653wZFmnpx4wwsAHUUVt9O7HJR6iG3QZ8KlwiakWg7NDaHX-U9C_eDcXSle2il8-ZLg4-qmdQBdvyTmpuuanu72vJpSMBBbXAVZOy5x25uKpBCahNLdiuYN9DLZk3Nteg4Ce1zYCRXAKYZUNK00EB6zAMPa_Vv5CBsXCuqAhFbGUg5jPAmSo" />
+                            src="/images/elderwood-villa.png" loading="lazy" decoding="async" />
                         <div
                             class="absolute top-4 left-4 bg-surface px-4 py-1 rounded-full font-label text-[10px] tracking-widest uppercase text-primary">
                             From $1,100</div>
@@ -513,8 +724,8 @@
         </div>
     </footer>
     <script>
-        // Mobile menu toggle
         document.addEventListener('DOMContentLoaded', () => {
+            // ── Mobile menu toggle ──
             const menuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const menuIcon = document.getElementById('menu-icon');
@@ -533,7 +744,6 @@
                 }
             });
 
-            // Close menu when a link is clicked
             mobileMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     isOpen = false;
@@ -543,20 +753,77 @@
                     mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
                 });
             });
-        });
 
-        // Scroll reveal animations
-        document.addEventListener('DOMContentLoaded', () => {
-            const reveals = document.querySelectorAll('.reveal');
-            const observer = new IntersectionObserver((entries) => {
+            // ── Navbar scroll shrink ──
+            const nav = document.querySelector('nav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 60) {
+                    nav.classList.add('nav-scrolled');
+                } else {
+                    nav.classList.remove('nav-scrolled');
+                }
+            }, { passive: true });
+
+            // ── Hero parallax ──
+            const heroImg = document.querySelector('.hero-parallax');
+            if (heroImg) {
+                window.addEventListener('scroll', () => {
+                    const scrolled = window.pageYOffset;
+                    if (scrolled < window.innerHeight) {
+                        heroImg.style.transform = `translateY(${scrolled * 0.35}px)`;
+                    }
+                }, { passive: true });
+            }
+
+            // ── Scroll reveal (supports .reveal, .reveal-left, .reveal-right, .reveal-scale) ──
+            const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+            const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
+                        revealObserver.unobserve(entry.target);
                     }
                 });
             }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-            reveals.forEach(el => observer.observe(el));
+            reveals.forEach(el => revealObserver.observe(el));
+
+            // ── Interactive Selector ──
+            const selectorOptions = document.querySelectorAll('.selector-option');
+            selectorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    selectorOptions.forEach(o => o.classList.remove('active'));
+                    option.classList.add('active');
+                });
+                option.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        selectorOptions.forEach(o => o.classList.remove('active'));
+                        option.classList.add('active');
+                    }
+                });
+            });
+
+            // Staggered entrance for selector
+            const selectorContainer = document.getElementById('selector-container');
+            if (selectorContainer) {
+                const selectorRevealObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            selectorOptions.forEach((opt, i) => {
+                                opt.style.opacity = '0';
+                                opt.style.transform = 'translateY(30px)';
+                                setTimeout(() => {
+                                    opt.style.transition = 'opacity 0.6s ease, transform 0.6s ease, flex 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+                                    opt.style.opacity = '1';
+                                    opt.style.transform = 'translateY(0)';
+                                }, 80 + i * 100);
+                            });
+                            selectorRevealObserver.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                selectorRevealObserver.observe(selectorContainer);
+            }
         });
     </script>
 </body>

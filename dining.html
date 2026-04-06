@@ -80,39 +80,36 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
-
-        .no-line-rule {
-            border: none !important;
-        }
-
-        .tonal-shift {
-            transition: background-color 0.3s ease;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
+        .no-line-rule { border: none !important; }
+        .tonal-shift { transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
+            opacity: 1; transform: translateY(0) translateX(0) scale(1);
+        }
+        [data-delay="1"] { transition-delay: 0.1s; }
+        [data-delay="2"] { transition-delay: 0.2s; }
+        [data-delay="3"] { transition-delay: 0.3s; }
+        .grain-overlay { position: relative; }
+        .grain-overlay::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5; pointer-events: none; mix-blend-mode: overlay; z-index: 1;
+        }
+        .nav-scrolled {
+            padding-top: 0.75rem !important; padding-bottom: 0.75rem !important;
+            box-shadow: 0 8px 30px rgba(28,28,25,0.12) !important;
+        }
         @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
+            .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; transition: none; }
             body { animation: none; }
             html { scroll-behavior: auto; }
         }
@@ -138,15 +135,15 @@
                 href="/experiences.html">Experiences</a>
         </div>
         <div class="flex items-center gap-4">
-            <button id="mobile-menu-btn" class="md:hidden" aria-label="Open menu"><span class="material-symbols-outlined text-primary text-2xl">menu</span></button>
+            <button id="mobile-menu-btn" class="md:hidden" aria-label="Open menu"><span id="menu-icon" class="material-symbols-outlined text-primary text-2xl">menu</span></button>
             <a href="/book-now.html"
-                class="bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container inline-block">
+                class="bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container hover:scale-[1.02] hover:shadow-lg inline-block">
                 Book Now
             </a>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 bg-[#fcf9f4]/95 backdrop-blur-xl shadow-lg z-40 px-6 py-8 space-y-6 font-['Noto_Serif'] text-lg">
+    <div id="mobile-menu" class="md:hidden fixed top-[72px] left-0 right-0 bg-[#fcf9f4]/95 backdrop-blur-xl shadow-lg z-40 px-6 py-8 space-y-6 font-['Noto_Serif'] text-lg transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
         <a href="/the-stay.html" class="block text-primary hover:text-primary-container transition-colors">The Stay</a>
         <a href="/dining.html" class="block text-primary font-bold border-b-2 border-primary pb-1">Dining</a>
         <a href="/wellness.html" class="block text-primary hover:text-primary-container transition-colors">Wellness</a>
@@ -156,10 +153,10 @@
 
     <main>
         <!-- Hero Section -->
-        <header class="relative h-[70vh] flex items-center justify-center overflow-hidden">
-            <img class="absolute inset-0 w-full h-full object-cover"
+        <header class="relative h-[70vh] flex items-center justify-center overflow-hidden grain-overlay">
+            <img class="absolute inset-0 w-full h-full object-cover hero-parallax"
                 alt="Artisanal plate of food featuring roasted vegetables"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLhUJl_LQukAqZknp3yYT6q9Et9yX1XOapwJ_bAqMInmmKPan9zLYtTd_Q_D3cn8y4JNtOY-qEDqnQc21KvW_0H2QA2zJBc9_Pt_Eu0TRBzYvBRKfxNZGz0TcikKBWDIT70a4Reg0BjOKe9mf3T_tyed4xpjg--Yu_jab5O2vTbtu2Xp2Y_JnSrrLmJc6PSMelXmADHYcuJ6xXbg1rkRshdenLDqTM4ghcd3IZCIuBQov8L2Fipfaqvjn_432JVFg9lH1r663VIH4" />
+                src="/images/plated-dish.png" loading="eager" />
             <div class="absolute inset-0 bg-primary/40 backdrop-brightness-75"></div>
             <div class="relative z-10 text-center max-w-5xl px-6 mt-16">
                 <span class="font-label text-on-primary text-xs tracking-[0.3em] uppercase mb-4 block">The Hearth</span>
@@ -287,9 +284,9 @@
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <img class="w-full aspect-[3/4] object-cover rounded-xl shadow-lg" alt="Fresh organic vegetables from the garden"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVLq6FSvD3DvHJM0rAB8FGd34SoPqSgwTcsZlsZccNF4zQKJ3oRQIosZcFQjhJzTBCUPHgZKfZBjVE5pnQ87JOXvFuqwm60a8lqfBbDAc7qj2QMnYWxAqTIBU2TtYEJwn1Ylr7E8Oxuioveg_CeCKaWho0LNYzyCywxz8oOxW2LgwUaaD0gUwpbxV3oTUhL475CE0n61PfSW1x61lrmFcaY83ZkpRPfRDzA5lSy-7WviRC_lbasAnJzcsHFofZ-4yAu7HXmti9-kk" />
+                            src="/images/vegetables.png" loading="lazy" decoding="async" />
                         <img class="w-full aspect-[3/4] object-cover rounded-xl shadow-lg mt-8" alt="Artisanal plated dish with microgreens"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLhUJl_LQukAqZknp3yYT6q9Et9yX1XOapwJ_bAqMInmmKPan9zLYtTd_Q_D3cn8y4JNtOY-qEDqnQc21KvW_0H2QA2zJBc9_Pt_Eu0TRBzYvBRKfxNZGz0TcikKBWDIT70a4Reg0BjOKe9mf3T_tyed4xpjg--Yu_jab5O2vTbtu2Xp2Y_JnSrrLmJc6PSMelXmADHYcuJ6xXbg1rkRshdenLDqTM4ghcd3IZCIuBQov8L2Fipfaqvjn_432JVFg9lH1r663VIH4" />
+                            src="/images/plated-dish.png" loading="lazy" decoding="async" />
                     </div>
                 </div>
             </div>
@@ -353,25 +350,68 @@
     </footer>
 
     <script>
-    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
-        const menu = document.getElementById('mobile-menu');
-        const icon = this.querySelector('.material-symbols-outlined');
-        menu.classList.toggle('hidden');
-        icon.textContent = menu.classList.contains('hidden') ? 'menu' : 'close';
-    });
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        let isOpen = false;
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
+        menuBtn.addEventListener('click', () => {
+            isOpen = !isOpen;
+            menuBtn.setAttribute('aria-expanded', isOpen);
+            menuIcon.textContent = isOpen ? 'close' : 'menu';
+            if (isOpen) {
+                mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            } else {
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            }
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                isOpen = false;
+                menuBtn.setAttribute('aria-expanded', 'false');
+                menuIcon.textContent = 'menu';
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            });
+        });
+
+        // Navbar scroll shrink
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        }, { passive: true });
+
+        // Hero parallax
+        const heroImg = document.querySelector('.hero-parallax');
+        if (heroImg) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                if (scrolled < window.innerHeight) {
+                    heroImg.style.transform = `translateY(${scrolled * 0.35}px)`;
+                }
+            }, { passive: true });
+        }
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(function(el) {
-            observer.observe(el);
-        });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => revealObserver.observe(el));
     });
     </script>
 </body>

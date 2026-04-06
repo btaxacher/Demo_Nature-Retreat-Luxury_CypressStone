@@ -80,35 +80,14 @@
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
-
-        .no-line-rule {
-            border: none !important;
-        }
-
-        .tonal-shift {
-            transition: background-color 0.3s ease;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
+        .no-line-rule { border: none !important; }
+        .tonal-shift { transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease; }
+        html { scroll-behavior: smooth; }
+        body { animation: fadeIn 0.5s ease-in-out; }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         /* Custom form stylings for Tailwind Forms */
         input:focus,
         select:focus,
@@ -116,11 +95,28 @@
             box-shadow: 0 0 0 1px #173021 !important;
             border-color: #173021 !important;
         }
-
         .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.8s ease, transform 0.8s ease; }
+        .reveal.active, .reveal-left.active, .reveal-right.active, .reveal-scale.active {
+            opacity: 1; transform: translateY(0) translateX(0) scale(1);
+        }
+        [data-delay="1"] { transition-delay: 0.1s; }
+        [data-delay="2"] { transition-delay: 0.2s; }
+        [data-delay="3"] { transition-delay: 0.3s; }
+        .grain-overlay { position: relative; }
+        .grain-overlay::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.5; pointer-events: none; mix-blend-mode: overlay; z-index: 1;
+        }
+        .nav-scrolled {
+            padding-top: 0.75rem !important; padding-bottom: 0.75rem !important;
+            box-shadow: 0 8px 30px rgba(28,28,25,0.12) !important;
+        }
         @media (prefers-reduced-motion: reduce) {
-            .reveal { opacity: 1; transform: none; transition: none; }
+            .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; transition: none; }
             body { animation: none; }
             html { scroll-behavior: auto; }
         }
@@ -145,14 +141,14 @@
                 href="/experiences.html">Experiences</a>
         </div>
         <button id="mobile-menu-btn" class="md:hidden" aria-label="Open menu">
-            <span class="material-symbols-outlined text-primary text-2xl">menu</span>
+            <span id="menu-icon" class="material-symbols-outlined text-primary text-2xl">menu</span>
         </button>
         <a href="/book-now.html"
-            class="hidden md:inline-block bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container">
+            class="hidden md:inline-block bg-primary text-on-primary px-8 py-3 rounded-md font-label text-sm tracking-widest uppercase scale-95 duration-200 ease-in-out hover:bg-primary-container hover:scale-[1.02] hover:shadow-lg">
             Book Now
         </a>
     </nav>
-    <div id="mobile-menu" class="hidden md:hidden fixed top-[72px] left-0 right-0 bg-[#fcf9f4]/95 backdrop-blur-xl shadow-lg z-40 px-6 py-8 space-y-6 font-['Noto_Serif'] text-lg">
+    <div id="mobile-menu" class="md:hidden fixed top-[72px] left-0 right-0 bg-[#fcf9f4]/95 backdrop-blur-xl shadow-lg z-40 px-6 py-8 space-y-6 font-['Noto_Serif'] text-lg transition-all duration-300 -translate-y-full opacity-0 pointer-events-none">
         <a href="/the-stay.html" class="block text-primary hover:text-primary-container transition-colors">The Stay</a>
         <a href="/dining.html" class="block text-primary hover:text-primary-container transition-colors">Dining</a>
         <a href="/wellness.html" class="block text-primary hover:text-primary-container transition-colors">Wellness</a>
@@ -165,7 +161,7 @@
         <!-- Left: Atmospheric Image (hidden on mobile) -->
         <div class="hidden md:block md:w-1/2 relative">
             <img class="absolute inset-0 w-full h-full object-cover" alt="Misty redwood forest path at dawn"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGc_NnPnjbeN9eA1TGBjr9N9e87gEkOhSSZSJEKiGJ93o35lyA8DosYOm1NMAjs-9fRz2ZhTR3IJhZsz-Scq2jYDG3tGuzEYgvoVOMCqm4AarFVqrecs-CyI1HHwVHkRVPAvT_2vrUNrQtbsbFX34dQt5vGptVCgwYENH5lGlIhBECIKf_H6-goRnNo6k7JVaCXDUmcYd-f3C98yQk0op5bvtC3f_PrKkzhC63yct9pOCYfYUB0DlE9ANA8Zl2Q6zCDHleMycd-Dc" />
+                src="/images/hero-redwoods.png" loading="lazy" decoding="async" />
             <div class="absolute inset-0 bg-primary/30"></div>
             <div class="absolute bottom-16 left-12 right-12 z-10">
                 <p class="font-headline text-3xl text-on-primary leading-snug">"Find yourself where the redwoods meet the sea."</p>
@@ -296,24 +292,67 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const reveals = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        let isOpen = false;
+
+        menuBtn.addEventListener('click', () => {
+            isOpen = !isOpen;
+            menuBtn.setAttribute('aria-expanded', isOpen);
+            menuIcon.textContent = isOpen ? 'close' : 'menu';
+            if (isOpen) {
+                mobileMenu.classList.remove('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            } else {
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            }
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                isOpen = false;
+                menuBtn.setAttribute('aria-expanded', 'false');
+                menuIcon.textContent = 'menu';
+                mobileMenu.classList.add('-translate-y-full', 'opacity-0', 'pointer-events-none');
+                mobileMenu.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
+            });
+        });
+
+        // Navbar scroll shrink
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 60) {
+                nav.classList.add('nav-scrolled');
+            } else {
+                nav.classList.remove('nav-scrolled');
+            }
+        }, { passive: true });
+
+        // Hero parallax
+        const heroImg = document.querySelector('.hero-parallax');
+        if (heroImg) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                if (scrolled < window.innerHeight) {
+                    heroImg.style.transform = `translateY(${scrolled * 0.35}px)`;
+                }
+            }, { passive: true });
+        }
+
+        // Scroll reveal
+        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
+                    revealObserver.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
-        reveals.forEach(el => observer.observe(el));
-    });
-    </script>
-    <script>
-    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
-        const menu = document.getElementById('mobile-menu');
-        const icon = this.querySelector('.material-symbols-outlined');
-        menu.classList.toggle('hidden');
-        icon.textContent = menu.classList.contains('hidden') ? 'menu' : 'close';
+        reveals.forEach(el => revealObserver.observe(el));
     });
     </script>
 </body>
